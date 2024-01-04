@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
+  Route,
   RouterProvider,
+  Routes,
   createBrowserRouter,
   useNavigate,
 } from "react-router-dom";
@@ -18,10 +20,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Dashboard />,
-  },
-  {
-    path: "/chat-room/:id",
-    element: <ChatRoom />,
+    children: [
+      {
+        path: "/chat-room/:id",
+        element: <ChatRoom />,
+      },
+    ],
   },
 ]);
 
@@ -71,6 +75,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <UserContext.Provider value={{ user, setUser }}>
           <RouterProvider router={router} />
+          {/* <Routes>
+            <Route path="/" element={<Dashboard />}>
+              <Route path="/chat-room/:id" element={<ChatRoom />} />
+            </Route>
+          </Routes> */}
         </UserContext.Provider>
       </QueryClientProvider>
     </NextUIProvider>

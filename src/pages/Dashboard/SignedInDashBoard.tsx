@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../App";
-import { getAllUser } from "../../services/user";
 import {
   Button,
   Input,
   Modal,
   ModalBody,
   ModalContent,
-  useDisclosure,
-  Tabs,
-  Tab,
-  Card,
-  CardBody,
   Select,
   SelectItem,
+  Tab,
+  Tabs,
+  useDisclosure,
 } from "@nextui-org/react";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 import { createChat } from "../../services/chat";
+import { getAllUser } from "../../services/user";
+import ChatList from "../../containers/ChatList/ChatList";
 
 export const SignedInDashBoard = () => {
   const { user } = React.useContext(UserContext);
@@ -26,10 +25,6 @@ export const SignedInDashBoard = () => {
     queryFn: getAllUser,
   });
 
-  const { data: chatRes } = useQuery({
-    queryKey: "users",
-    queryFn: getAllUser,
-  });
   const [values, setValues] = useState(new Set([]));
   const [chatName, setChatName] = useState<string>();
   const navigate = useNavigate();
@@ -46,7 +41,7 @@ export const SignedInDashBoard = () => {
     if (values.size && user) {
       const result = await createChat({
         createdUserId: user?._id,
-        users: Array.from(values),
+        users: [...Array.from(values), user._id],
         chatName,
       });
       if (result) {
@@ -67,6 +62,7 @@ export const SignedInDashBoard = () => {
             Create new chat
           </Button>
         </div>
+        <ChatList />
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

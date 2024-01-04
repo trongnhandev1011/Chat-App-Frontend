@@ -11,10 +11,20 @@ export const getChatById = async (id: string) => {
   }
 };
 
+export const getAllChat = async () => {
+  try {
+    const result = await axiosClient.get(`/api/chat`);
+
+    return result.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const createChat = async (data: {
   createdUserId: string;
   chatName?: string;
-  users: User[];
+  users: string[];
 }) => {
   try {
     const result = await axiosClient.post("/api/chat", data);

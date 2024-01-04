@@ -49,7 +49,7 @@ export default function ChatRoom() {
   return (
     <div className="chat-room">
       <div></div>
-      <div className="flex fixed bottom-0 w-screen px-10 shadow gap-10 border border-black py-4">
+      <div className="flex fixed left-[300px] bottom-0 w-[calc(100vw-300px)] px-10 shadow gap-10 border border-top-black py-4 items-center">
         <div className="flex-1">
           <Input
             className="w-full"
