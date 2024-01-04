@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import { User } from "./types/user";
 import ChatRoom from "./pages/ChatRoom/ChatRoom";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import { getSupabaseInstance } from "./supabase/supabase";
+import axiosClient from "./services/backend";
+import { NextUIProvider } from "@nextui-org/react";
+import { getMyProfile } from "./services/user";
+import { User } from "./types/user";
 
 const router = createBrowserRouter([
   {
@@ -29,29 +37,43 @@ export const UserContext = React.createContext<{
 function App() {
   const [user, setUser] = useState<User>();
 
+  const supabase = getSupabaseInstance();
+
   const queryClient = new QueryClient();
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
-    }
+    supabase.auth.onAuthStateChange(async (event) => {
+      if (event !== "SIGNED_OUT") {
+        supabase.auth.getSession().then((value) => {
+          axiosClient.defaults.headers[
+            "Authorization"
+          ] = `Bearer ${value.data.session?.access_token}`;
+
+          getMyProfile()
+            ?.then((data) => {
+              if (data.data.user) {
+                setUser(data.data.user);
+              }
+            })
+            .catch(() => {
+              setUser(undefined);
+              window.location.assign("/");
+            });
+        });
+      } else {
+        setUser(undefined);
+      }
+    });
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserContext.Provider value={{ user, setUser }}>
-        <RouterProvider router={router} />
-      </UserContext.Provider>
-    </QueryClientProvider>
+    <NextUIProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserContext.Provider value={{ user, setUser }}>
+          <RouterProvider router={router} />
+        </UserContext.Provider>
+      </QueryClientProvider>
+    </NextUIProvider>
   );
 }
 

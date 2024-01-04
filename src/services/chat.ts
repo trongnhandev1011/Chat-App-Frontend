@@ -1,3 +1,4 @@
+import { User } from "../types/user";
 import axiosClient from "./backend";
 
 export const getChatById = async (id: string) => {
@@ -12,8 +13,8 @@ export const getChatById = async (id: string) => {
 
 export const createChat = async (data: {
   createdUserId: string;
-  secondUserId: string;
-  messages: any;
+  chatName?: string;
+  users: User[];
 }) => {
   try {
     const result = await axiosClient.post("/api/chat", data);

@@ -1,4 +1,3 @@
-import { Button, Input } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import axiosClient, { GENERAL_BASE_URL } from "../../services/backend";
@@ -6,6 +5,7 @@ import { UserContext } from "../../App";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getChatById } from "../../services/chat";
+import { Button, Input } from "@nextui-org/react";
 
 export default function ChatRoom() {
   const socket = useRef<Socket | null>(null);
@@ -18,8 +18,6 @@ export default function ChatRoom() {
     queryKey: id,
     queryFn: () => axiosClient.get(`/api/chat/${id}`),
   });
-
-  
 
   const [createdUserId, secondUserId] = id.split("_");
 

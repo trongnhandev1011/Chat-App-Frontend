@@ -10,3 +10,13 @@ export const getAllUser = () => {
     console.log(e);
   }
 };
+
+export const getMyProfile = () => {
+  try {
+    const result = axiosClient.get<{ user: User }>("/api/user/me");
+
+    return result;
+  } catch (e) {
+    console.log(e);
+  }
+};
