@@ -10,9 +10,9 @@ export default function Dashboard() {
   if (!user) return <LoginPage />;
 
   return (
-    <>
+    <div className="flex">
       <SignedInDashBoard />
       <Outlet />
-    </>
+    </div>
   );
 }

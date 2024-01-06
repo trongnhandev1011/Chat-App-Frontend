@@ -61,7 +61,7 @@ function App() {
             })
             .catch(() => {
               setUser(undefined);
-              window.location.assign("/");
+              // window.location.assign("/");
             });
         });
       } else {

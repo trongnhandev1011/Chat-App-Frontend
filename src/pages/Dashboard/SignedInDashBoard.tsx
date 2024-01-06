@@ -50,8 +50,8 @@ export const SignedInDashBoard = () => {
     }
   };
   return (
-    <div className="w-screen h-screen">
-      <div className="px-10 pt-10 h-full shadow w-[300px]">
+    <div className="h-screen">
+      <div className="px-10 pt-10 h-full shadow w-[300px] relative">
         <div className="text-center mt-4 rounded-md">
           <Button
             variant="faded"
@@ -124,16 +124,16 @@ export const SignedInDashBoard = () => {
             )}
           </ModalContent>
         </Modal>
-      </div>
-      <div className="absolute right-6 top-6 flex items-center gap-4">
-        <div>
-          <img
-            src={user?.avatarUrl}
-            className="w-[40px] h-[40px] rounded-full"
-          />
-        </div>
-        <div>
-          <span>{user?.displayName}</span>
+        <div className="flex items-center gap-4 absolute bottom-20">
+          <div>
+            <img
+              src={user?.avatarUrl}
+              className="w-[40px] h-[40px] rounded-full"
+            />
+          </div>
+          <div>
+            <span>{user?.displayName}</span>
+          </div>
         </div>
       </div>
     </div>

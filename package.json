@@ -17,6 +17,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.39.2",
     "axios": "^1.6.2",
+    "clsx": "^2.1.0",
     "framer-motion": "^10.17.4",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
